@@ -12,6 +12,7 @@ DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath)
 	DriverObject->DriverUnload = PriorityBoosterUnload;
 	DriverObject->MajorFunction[IRP_MJ_CREATE] = PriorityBoosterCreateClose;
 	DriverObject->MajorFunction[IRP_MJ_CLOSE] = PriorityBoosterCreateClose;
+	DriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = PriorityBoosterDeviceControl;
 
 	UNICODE_STRING devName = RTL_CONSTANT_STRING(L"\\Device\\PriorityBooster");
 	PDEVICE_OBJECT DeviceObject;
