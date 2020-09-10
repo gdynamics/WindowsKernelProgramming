@@ -9,6 +9,7 @@ NTSTATUS PriorityBoosterDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _In_ PIR
 extern "C" NTSTATUS
 DriverEntry(_In_ PDRIVER_OBJECT DriverObject, _In_ PUNICODE_STRING RegistryPath) {
 	UNREFERENCED_PARAMETER(RegistryPath);
+
 	DriverObject->DriverUnload = PriorityBoosterUnload;
 	DriverObject->MajorFunction[IRP_MJ_CREATE] = PriorityBoosterCreateClose;
 	DriverObject->MajorFunction[IRP_MJ_CLOSE] = PriorityBoosterCreateClose;
