@@ -51,13 +51,15 @@ NTSTATUS PriorityBoosterCreateClose(_In_ PDEVICE_OBJECT DeviceObject, _In_ PIRP 
 
 _Use_decl_annotations_
 NTSTATUS PriorityBoosterDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _In_ PIRP Irp) {
+	UNREFERENCED_PARAMETER(DeviceObject);
+
 	auto stack = IoGetCurrentIrpStackLocation(Irp);
 	auto status = STATUS_SUCCESS;
 
 	switch (stack->Parameters.DeviceIoControl.IoControlCode) {
-		case IOCTL_PRIORITY_BOOSTER_SET_PRIORITY:
+		case IOCTL_PRIORITY_BOOSTER_SET_PRIORITY: {
 			if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(ThreadData)) {
-				status = STATUS_BUFFER_TOO_SMALL; ]
+				status = STATUS_BUFFER_TOO_SMALL;
 				break;
 			}
 
@@ -82,10 +84,12 @@ NTSTATUS PriorityBoosterDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _In_ PIR
 			KdPrint(("Thread priority for %d to %d succeeded!\n", data->ThreadId, data->Priority));
 
 			break;
+		}
 
-		default:
+		default: {
 			status = STATUS_INVALID_DEVICE_REQUEST;
 			break;
+		}
 	}
 
 	Irp->IoStatus.Status = STATUS_SUCCESS;
