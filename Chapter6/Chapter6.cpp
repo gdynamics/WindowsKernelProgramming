@@ -85,8 +85,10 @@ NTSTATUS PriorityBoosterDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _In_ PIR
 			ObDereferenceObject(Thread); // PsLookup increments object reference if successful (leak)
 			KdPrint(("Thread priority for %d to %d succeeded!\n", data->ThreadId, data->Priority));
 		}
-		__except (EXCEPTION_EXECUTE_HANDLER) {
-			status = STATUS_ACCESS_VIOLATION;
+		__except (GetExceptionCode() == STATUS_ACCESS_VIOLATION
+			? EXCEPTION_EXECUTE_HANDLER
+			: EXCEPTION_CONTINUE_SEARCH) {
+				status = STATUS_ACCESS_VIOLATION;
 		}
 		break;
 	}
