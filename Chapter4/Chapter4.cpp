@@ -58,7 +58,7 @@ NTSTATUS PriorityBoosterDeviceControl(_In_ PDEVICE_OBJECT DeviceObject, _In_ PIR
 	auto status = STATUS_SUCCESS;
 
 	switch (stack->Parameters.DeviceIoControl.IoControlCode) {
-		case IOCTL_PRIORITY_BOOSTER_SET_PRIORITY: {
+		case (ULONG)IOCTL_PRIORITY_BOOSTER_SET_PRIORITY: {
 			if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(ThreadData)) {
 				status = STATUS_BUFFER_TOO_SMALL;
 				break;
