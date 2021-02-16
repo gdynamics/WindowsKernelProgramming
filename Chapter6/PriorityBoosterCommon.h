@@ -29,3 +29,19 @@ public:
 
 	}
 };
+
+struct Mutex {
+	KMUTEX _mutex;
+public:
+	void Init() {
+		KeInitializeMutex(&_mutex, 0);
+	}
+
+	void Lock() {
+		KeWaitForSingleObject(&_mutex, Executive, KernelMode, FALSE, nullptr);
+	}
+
+	void Unlock() {
+		KeReleaseMutex(&_mutex, FALSE);
+	}
+};
