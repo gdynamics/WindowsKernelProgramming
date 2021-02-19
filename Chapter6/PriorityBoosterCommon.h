@@ -1,4 +1,5 @@
 #pragma once
+#include <wdm.h>
 
 struct ThreadData {
 	unsigned long ThreadId;
@@ -57,4 +58,13 @@ public:
 	~AutoLock() {
 		_lock.Unlock();
 	}
+};
+
+// Utilizes the AutoLock RAII struct
+class FastMutex {
+	FAST_MUTEX _mutex;
+public:
+	void Init();
+	void Lock();
+	void Unlock();
 };

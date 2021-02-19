@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chapter6.cpp" />
+    <ClCompile Include="PriorityBoosterCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PriorityBoosterCommon.h" />
