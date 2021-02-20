@@ -64,9 +64,17 @@ public:
 class FastMutex {
 	FAST_MUTEX _mutex;
 public:
-	void Init();
-	void Lock();
-	void Unlock();
+	void Init() {
+		ExInitializeFastMutex(&_mutex);
+	}
+
+	void Lock() {
+		ExAcquireFastMutex(&_mutex);
+	}
+
+	void Unlock() {
+		ExReleaseFastMutex(&_mutex);
+	}
 };
 
 struct AutoEResource {
