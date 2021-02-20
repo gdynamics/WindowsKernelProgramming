@@ -68,3 +68,31 @@ public:
 	void Lock();
 	void Unlock();
 };
+
+struct AutoEResource {
+	_ERESOURCE _eresource;
+public:
+	void Init() {
+		ExInitializeResourceLite(&_eresource);
+	}
+
+	void Share() {
+		ExAcquireResourceSharedLite(&_eresource, TRUE);
+	}
+
+	void Exclusive() {
+		ExEnterCriticalRegionAndAcquireResourceExclusive(&_eresource);
+	}
+
+	void Downgrade() {
+		ExConvertExclusiveToSharedLite(&_eresource);
+	}
+
+	void Release() {
+		ExReleaseResourceLite(&_eresource);
+	}
+
+	~AutoEResource() {
+		Release();
+	}
+};

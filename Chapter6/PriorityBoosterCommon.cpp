@@ -1,4 +1,4 @@
-#include "PriorityBoosterCommon.h""
+#include "PriorityBoosterCommon.h"
 
 void FastMutex::Init() {
 	ExInitializeFastMutex(&_mutex);
