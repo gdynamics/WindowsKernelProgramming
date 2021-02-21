@@ -77,6 +77,30 @@ public:
 	}
 };
 
+// Utilizes the AutoLock RAII struct
+class DispatchSpinLock {
+	KSPIN_LOCK _spinlock;
+public:
+	void Init() {
+		KeInitializeSpinLock(&_spinlock);
+	}
+
+	void Lock() {
+		if (!Level()) { return -1; }
+		ExAcquireFastMutex(&_spinlock);
+	}
+
+	void Unlock() {
+		if (!Level()) { return -1; }
+		ExReleaseFastMutex(&_spinlock);
+	}
+
+	bool Level() {
+		return KeGetCurrentIrql() == DISPATCH_LEVEL;
+	}
+};
+
+
 struct AutoEResource {
 	_ERESOURCE _eresource;
 public:
