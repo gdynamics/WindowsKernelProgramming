@@ -78,25 +78,23 @@ public:
 };
 
 // Utilizes the AutoLock RAII struct
+// The "DISPATCH_LEVEL" requirement for the excercise is moot because KeAcquireSpinLock()
+// automatically raises the IRQL itself, and does so to DISPATCH_LEVEL.
 class DispatchSpinLock {
 	KSPIN_LOCK _spinlock;
+	KIRQL _previous_irql;
 public:
 	void Init() {
 		KeInitializeSpinLock(&_spinlock);
+		_previous_irql = NULL;
 	}
 
-	void Lock() {
-		if (!Level()) { return -1; }
-		ExAcquireFastMutex(&_spinlock);
+	bool Lock() {
+		KeAcquireSpinLock(&_spinlock, &_previous_irql);
 	}
 
-	void Unlock() {
-		if (!Level()) { return -1; }
-		ExReleaseFastMutex(&_spinlock);
-	}
-
-	bool Level() {
-		return KeGetCurrentIrql() == DISPATCH_LEVEL;
+	bool Unlock() {
+		KeReleaseSpinLock(&_spinlock, _previous_irql);
 	}
 };
 
